@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,20 @@ public class UserService {
     User user = userRepository.findByUsername(currentusername);
 
     return user;
+  }
+
+  public boolean isAdmin(){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String currentUsername = authentication.getName();
+    User user = userRepository.findByUsername(currentUsername);
+
+    for(Role r : user.getRoles())
+      if(r.getRole().equals("ADMIN"))
+//        return new Boolean(true);
+        return true;
+
+//    return new Boolean(false);
+    return false;
   }
 
 }

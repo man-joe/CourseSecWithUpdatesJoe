@@ -18,6 +18,11 @@ public class HomeController {
   @Autowired
   UserService userService;
 
+  @Autowired
+  UserRepository userRepository;
+//  @Autowired
+//  RoleRepository roleRepository;
+
   @GetMapping("/register")
   public String showRegistrationPage(Model model){
     model.addAttribute("user", new User());
@@ -48,6 +53,11 @@ public class HomeController {
     model.addAttribute("courses", courseRepository.findAll());
     if(userService.getUser() != null) {
       model.addAttribute("user_id", userService.getUser().getId());
+      if(userService.isAdmin()) {
+        model.addAttribute("is_admin", userService.isAdmin());
+        model.addAttribute("users" , userRepository.findAll());
+//        model.addAttribute("roles", roleRepository.)
+      }
     }
     return "list";
   }
